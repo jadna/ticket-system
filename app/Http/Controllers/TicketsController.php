@@ -10,7 +10,8 @@ use App\Models\Category;
 use App\Models\User;
 use App\Mailers\AppMailer;
 use App\Http\Requests;
-
+use App\Models\Priority;
+use App\Models\Status;
 
 class TicketsController extends Controller
 {
@@ -28,8 +29,10 @@ class TicketsController extends Controller
     {
     	$tickets = Ticket::paginate(10);
         $categories = Category::all();
+        $status = Status::all();
+        $priority = Priority::all();
 
-        return view('tickets.index', compact('tickets', 'categories'));
+        return view('tickets.index', compact('tickets', 'categories', 'status', 'priority'));
     }
 
     /**
@@ -41,8 +44,10 @@ class TicketsController extends Controller
     {
         $tickets = Ticket::where('user_id', Auth::user()->id)->paginate(10);
         $categories = Category::all();
+        $status = Status::all();
+        $priorities = Priority::all();
 
-        return view('tickets.user_tickets', compact('tickets', 'categories'));
+        return view('tickets.user_tickets', compact('tickets', 'categories', 'status', 'priorities'));
     }
 
     /**
@@ -53,8 +58,10 @@ class TicketsController extends Controller
     public function create()
     {
     	$categories = Category::all();
+        $status = Status::all();
+        $priorities = Priority::all();
 
-        return view('tickets.create', compact('categories'));
+        return view('tickets.create', compact('categories', 'status', 'priorities'));
     }
 
     /**
@@ -102,8 +109,10 @@ class TicketsController extends Controller
         $comments = $ticket->comments;
 
         $category = $ticket->category;
+        //$status = $ticket->status;
+        $priorities = $ticket->priority;
 
-        return view('tickets.show', compact('ticket', 'category', 'comments'));
+        return view('tickets.show', compact('ticket', 'category', 'comments', 'status', 'priorities'));
     }
 
     /**
@@ -126,4 +135,6 @@ class TicketsController extends Controller
 
         return redirect()->back()->with("status", "O Chamado foi concluido.");
     }
+
+ 
 }

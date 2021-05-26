@@ -27,3 +27,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/ticket', 'App\Http\Controllers\TicketsController@create');
 Route::post('/ticket', 'App\Http\Controllers\TicketsController@store');
+
+Route::get('/user_tickets', 'TicketsController@userTickets');
+

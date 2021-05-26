@@ -35,7 +35,7 @@
                                 <select id="category" type="category" class="form-control" name="category">
                                     <option value="">Selecione Categoria</option>
                                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
 
@@ -53,9 +53,9 @@
                             <div class="col-md-6">
                                 <select id="priority" type="" class="form-control" name="priority">
                                     <option value="">Selecione Prioridade</option>
-                                    <option value="low">Baixa</option>
-                                    <option value="medium">Média</option>
-                                    <option value="high">Alta</option>
+                                    @foreach ($priorities as $priority)
+                                    <option value="{{ $priority->id }}">{{ $priority->name }}</option>
+                                    @endforeach
                                 </select>
 
                                 @if ($errors->has('priority'))

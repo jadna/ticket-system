@@ -17,4 +17,14 @@ class Ticket extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function Status()
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function Priority()
+    {
+        return $this->belongsTo(Priority::class);
+    }
 }
