@@ -20,7 +20,8 @@ class PrioritiesTableSeeder extends Seeder
     {
         foreach (self::$labels as $label) {
             DB::table('priorities')->insert([
-                'name' => $label
+                'name' => $label,
+                'created_at' => date('Y-m-d H:i:s')
             ]);
         }
     }

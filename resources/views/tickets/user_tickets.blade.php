@@ -7,20 +7,21 @@
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-ticket"> My Tickets</i>
+                    <i class="fa fa-ticket">Chamados</i>
                 </div>
 
                 <div class="panel-body">
                     @if ($tickets->isEmpty())
-                        <p>You have not created any tickets.</p>
+                        <p>Não existem chamados.</p>
                     @else
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Category</th>
-                                    <th>Title</th>
+                                    <th>Categoria</th>
+                                    <th>Assunto</th>
+                                    <th>Prioridade</th>
                                     <th>Status</th>
-                                    <th>Last Updated</th>
+                                    <th>Data</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -39,11 +40,23 @@
                                         </a>
                                     </td>
                                     <td>
-                                    @if ($ticket->status === 'Open')
-                                        <span class="label label-success">{{ $ticket->status }}</span>
-                                    @else
-                                        <span class="label label-danger">{{ $ticket->status }}</span>
-                                    @endif
+                                    @foreach ($priorities as $priority)
+                                        @if ($priority->id === $ticket->priority)
+                                            {{ $priority->name }}
+                                        @endif
+                                    @endforeach
+                                    </td>
+                                    <td>
+                                    @foreach ($status as $statu)
+                                        @if ($statu->id === $ticket->status)
+                                            @if ($statu->id === 1)
+                                                <span class="label label-success">{{ $statu->name }}</span>
+                                            @else
+                                                <span class="label label-danger">{{ $statu->name }}</span>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                    
                                     </td>
                                     <td>{{ $ticket->updated_at }}</td>
                                 </tr>

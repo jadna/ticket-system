@@ -13,6 +13,14 @@
 3 - php artisan migrate
 4 - php artisan db:seed
 
+
+Status
+1 - Aberto  
+2 - Em andamento 
+3- Atrasado 
+4- Resolvido
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
