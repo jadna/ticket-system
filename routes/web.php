@@ -23,13 +23,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'App\Http\Controllers\TicketsController@index')->name('home');
+//Route::get('/', 'HomeController@index');
+Route::get('/home', 'App\Http\Controllers\TicketsController@userTickets')->name('home');
 
-Route::get('/ticket', 'App\Http\Controllers\TicketsController@create');
-Route::post('/ticket', 'App\Http\Controllers\TicketsController@store');
+Route::get('/new_ticket', 'App\Http\Controllers\TicketsController@create')->name('new_ticket');
+Route::post('/new_ticket', 'App\Http\Controllers\TicketsController@store')->name('new_ticket'); 
 
+Route::get('/tickets/{ticket_id}', 'App\Http\Controllers\TicketsController@show');
 Route::get('/user_tickets', 'App\Http\Controllers\TicketsController@userTickets');
-Route::get('/tickets/{ticket_id}', 'App\Http\Controllers\TicketsController@list');
 
 Route::post('/comment', 'App\Http\Controllers\CommentsController@postComment');
 
@@ -39,3 +40,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
     Route::get('tickets', 'App\Http\Controllers\TicketsController@index');
     Route::post('close_ticket/{ticket_id}', 'App\Http\Controllers\TicketsController@close');
 });
+
+

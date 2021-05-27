@@ -4,6 +4,9 @@
 
 @section('content')
     <div class="row">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('new_ticket') }}">Abrir Chamado</a>
+        </li>
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -58,7 +61,7 @@
                                     @endforeach
                                     
                                     </td>
-                                    <td>{{ $ticket->updated_at }}</td>
+                                    <td>{{ $ticket->updated_at->format('d/m/Y') }}</td>
                                 </tr>
                             @endforeach
                             </tbody>

@@ -50,4 +50,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Ticket::class);
     }
+
+     /**
+     * Get the user that created ticket
+     * @param  User  $user_id
+     */
+    public static function getTicketOwner($user_id)
+    {
+        return static::where('id', $user_id)->firstOrFail();
+    }
 }

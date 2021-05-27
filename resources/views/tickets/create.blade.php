@@ -11,7 +11,7 @@
                 <div class="panel-body">
                     @include('includes.flash')
 
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/ticket') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/new_ticket') }}">
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
@@ -48,7 +48,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('priority') ? ' has-error' : '' }}">
-                            <label for="priority" class="col-md-4 control-label">Priotidade</label>
+                            <label for="priority" class="col-md-4 control-label">Prioridade</label>
 
                             <div class="col-md-6">
                                 <select id="priority" type="" class="form-control" name="priority">

@@ -20,6 +20,18 @@ Status
 3- Atrasado 
 4- Resolvido
 
+Login
+- Administrador
+-[Login:] absx.suporte@mailinator.com
+-[Senha:] 123456
+
+- Vendedores
+-[Login:] felipe.absx@mailinator.com
+-[Senha:] 123456
+-[Login:] marcos.absx@mailinator.com
+-[Senha:] 123456
+-[Login:] joao.absx@mailinator.com
+-[Senha:] 123456
 
 ## About Laravel
 

@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-@include('tickets.user_tickets')
+
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
@@ -11,16 +11,11 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    <p>You are logged in!</p>
 
                     @if (Auth::user()->is_admin)
-                        <p>
-                            See all <a href="{{ url('user_tickets') }}">tickets</a>
-                        </p>
+                        @include('tickets.index')
                     @else
-                        <p>
-                            See all your <a href="{{ url('user_tickets') }}">tickets</a> or <a href="{{ url('ticket') }}">open new ticket</a>
-                        </p>
+                        @include('tickets.user_tickets')
                     @endif
                 </div>
             </div>

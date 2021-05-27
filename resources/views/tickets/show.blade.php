@@ -14,16 +14,16 @@
                     @include('includes.flash')
 
                     <div class="ticket-info">
-                        <p>Mensagem: {{ $ticket->message }}</p>
                         <p>Categoria: {{ $category->name }}</p>
-                        <p>Prioridade: {{ $priority }}</p>
+                        <p>Prioridade: {{ $ticket->priority }}</p>
                         <p>
-                        @if ($ticket->status === 4)
+                        @if ($ticket->status === 1)
                             Status: <span class="label label-success">{{ $ticket->status }}</span>
                         @else
                             Status: <span class="label label-danger">{{ $ticket->status }}</span>
                         @endif
                         </p>
+                        <p>Mensagem: {{ $ticket->message }}</p>
                         <p>Created on: {{ $ticket->created_at->diffForHumans() }}</p>
                     </div>
 

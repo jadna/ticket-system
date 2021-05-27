@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Ticket;
 use App\Models\Category;
-use App\Models\User;
-use App\Mailers\AppMailer;
-use App\Http\Requests;
 use App\Models\Priority;
 use App\Models\Status;
+use App\Models\User;
+use App\Http\Requests;
+
 
 class TicketsController extends Controller
 {
@@ -34,6 +34,8 @@ class TicketsController extends Controller
         $totalTickets = Ticket::count();
         $openTickets = Ticket::where('status', 1)->count();
         $closedTickets = Ticket::where('status', 4)->count();
+
+        var_dump($tickets);
 
         return view('tickets.index', compact('tickets', 'categories', 'status', 'priorities', 'totalTickets', 'openTickets','closedTickets'));
     }
@@ -73,7 +75,7 @@ class TicketsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, AppMailer $mailer)
+    public function store(Request $request)
     {
         /**1 - Aberto  2 - Em andamento 3- Atrasado 4- Resolvido */
         $this->validate($request, [
@@ -96,8 +98,6 @@ class TicketsController extends Controller
 
         $ticket->save();
 
-        //$mailer->sendTicketInformation(Auth::user(), $ticket);
-
         return redirect()->back()->with("status", "O Chamado ID: #$ticket->ticket_id foi aberto.");
     }
 
@@ -107,17 +107,17 @@ class TicketsController extends Controller
      * @param  int  $ticket_id
      * @return \Illuminate\Http\Response
      */
-    public function list($ticket_id)
+    public function show($ticket_id)
     {
         $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
-        //print("<pre>".print_r($ticket,true)."</pre>"); 
+        print("<pre>".print_r($ticket->status,true)."</pre>"); 
      
         $comments = $ticket->comments;
         $category = $ticket->category;
         $status = $ticket->status;
         $priority = $ticket->priority;
         
-        return view('tickets.list', compact('ticket', 'category', 'comments', 'status', 'priority'));
+        return view('tickets.show', compact('ticket', 'category', 'comments', 'status', 'priority'));
     }
 
     /**
