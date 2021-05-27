@@ -1,13 +1,12 @@
 @extends('layouts.app')
-@extends('tickets.create')
+
 
 @section('title', 'All Tickets')
 
 @section('content')
     <div class="content">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('new_ticket') }}">Abrir Chamado</a>
-        </li>
+        <a href="{{ route('new_ticket') }}" class="btn btn-primary">Abrir Chamado</a>
+        <br/>
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -23,30 +22,39 @@
                         @endif
 
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="card text-white bg-primary">
+                            <div class="col-md-3">
+                                <div class="card text-white bg-secondary">
                                     <div class="card-body pb-3">
-                                        <div class="text-value">{{ number_format(1) }}</div>
+                                        <div class="text-value">{{ number_format($totalTickets) }}</div>
                                         <div>Total Chamados</div>
                                         <br />
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
-                                <div class="card text-white bg-success">
+                            <div class="col-md-3">
+                                <div class="card text-white bg-primary">
                                     <div class="card-body pb-3">
-                                        <div class="text-value">{{ number_format(1) }}</div>
+                                        <div class="text-value">{{ number_format($openTickets) }}</div>
                                         <div>Chamados Abertos</div>
                                         <br />
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="card text-white bg-danger">
                                     <div class="card-body pb-3">
-                                        <div class="text-value">{{ number_format(1) }}</div>
+                                        <div class="text-value">{{ number_format($lateTickets) }}</div>
+                                        <div>Chamados Atrasados</div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="card text-white bg-success">
+                                    <div class="card-body pb-3">
+                                        <div class="text-value">{{ number_format($closedTickets) }}</div>
                                         <div>Chamados Fechados</div>
                                         <br />
                                     </div>
@@ -76,7 +84,9 @@
                                         <th>Assunto</th>
                                         <th>Prioridade</th>
                                         <th>Status</th>
-                                        <th>Data</th>
+                                        <th>Responsavel</th>
+                                        <th>Data Aberto</th>
+                                        <th>Data Alterado</th>
                                         <th style="text-align:center" colspan="2">Ações</th>
                                     </tr>
                                 </thead>
@@ -96,16 +106,31 @@
                                             </a>
                                         </td>
                                         <td>
-                                        @foreach ($status as $statu)
-                                            @if ($statu->id === $ticket->status)
-                                                @if ($statu->id === 1)
-                                                    <span class="label label-success">{{ $statu->name }}</span>
+                                        @foreach ($priorities as $priority)
+                                            @if ($priority->id === $ticket->priority_id)
+                                                {{ $priority->name }}
+                                            @endif
+                                        @endforeach
+                                        </td>
+                                        <td>
+                                        @foreach ($statuses as $status)
+                                            @if ($status->id === $ticket->status_id)
+                                                @if ($status->id === 1)
+                                                    <span class="label label-success">{{ $status->name }}</span>
                                                 @else
-                                                    <span class="label label-danger">{{ $statu->name }}</span>
+                                                    <span class="label label-danger">{{ $status->name }}</span>
                                                 @endif
                                             @endif
                                         @endforeach
                                         </td>
+                                        <td>
+                                        @foreach ($employees as $employee)
+                                            @if ($employee->id === $ticket->user_id)
+                                                {{ $employee->name }}
+                                            @endif
+                                        @endforeach
+                                        </td>
+                                        <td>{{ $ticket->created_at->format('d/m/Y') }}</td>
                                         <td>{{ $ticket->updated_at->format('d/m/Y') }}</td>
                                         <td>
                                             <a href="{{ url('tickets/' . $ticket->ticket_id) }}" class="btn btn-primary">Comment</a>

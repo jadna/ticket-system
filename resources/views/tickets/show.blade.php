@@ -15,12 +15,12 @@
 
                     <div class="ticket-info">
                         <p>Categoria: {{ $category->name }}</p>
-                        <p>Prioridade: {{ $ticket->priority }}</p>
+                        <p>Prioridade: {{ $priority->name }}</p>
                         <p>
                         @if ($ticket->status === 1)
-                            Status: <span class="label label-success">{{ $ticket->status }}</span>
+                            Status: <span class="label label-success">{{ $status->name }}</span>
                         @else
-                            Status: <span class="label label-danger">{{ $ticket->status }}</span>
+                            Status: <span class="label label-danger">{{ $status->name }}</span>
                         @endif
                         </p>
                         <p>Mensagem: {{ $ticket->message }}</p>

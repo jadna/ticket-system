@@ -24,11 +24,7 @@ class CommentsController extends Controller
                 'comment'    => $request->input('comment'),
             ]);
 
-            // send mail if the user commenting is not the ticket owner
-            /*if ($comment->ticket->user->id !== Auth::user()->id) {
-                $mailer->sendTicketComments($comment->ticket->user, Auth::user(), $comment->ticket, $comment);
-            }*/
 
-            return redirect()->back()->with("status", "Comentario salvo com sucesso.");
+            return redirect()->route('home')->with("status", "Comentario salvo com sucesso.");
     }
 }

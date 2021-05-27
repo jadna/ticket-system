@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use App\Models\Ticket;
 use App\Models\Category;
 use App\Models\Priority;
 use App\Models\Status;
 use App\Models\User;
 use App\Http\Requests;
+use App\Http\ReflectionClass;
 
 
 class TicketsController extends Controller
@@ -28,16 +30,27 @@ class TicketsController extends Controller
     public function index()
     {
     	$tickets = Ticket::paginate(10);
+        $tickets = Ticket::orderBy('updated_at', 'desc')->paginate(10);
         $categories = Category::all();
-        $status = Status::all();
+        $statuses  = Status::all();
         $priorities = Priority::all();
+        $employees = User::all();
         $totalTickets = Ticket::count();
-        $openTickets = Ticket::where('status', 1)->count();
-        $closedTickets = Ticket::where('status', 4)->count();
+        $openTickets = Ticket::where('status_id', 1)->count();
+        $lateTickets = Ticket::where('status_id', 3)->count();
+        $closedTickets = Ticket::where('status_id', 4)->count();
+        /*$employee = DB::table('tickets')
+        ->join('users', 'users.id', '=', 'tickets.user_id')
+        ->select('users.name as user')
+        ->get();*/
 
-        var_dump($tickets);
+        $now = date('Y-m-d');
+        $res = Ticket::where('created_at', '<', $now)
+            ->update(['status_id' => 3]);
 
-        return view('tickets.index', compact('tickets', 'categories', 'status', 'priorities', 'totalTickets', 'openTickets','closedTickets'));
+        //print("<pre>".print_r($res,true)."</pre>"); 
+
+        return view('tickets.index', compact('tickets', 'categories', 'statuses', 'priorities','employees', 'totalTickets', 'openTickets','closedTickets', 'lateTickets'));
     }
 
     /**
@@ -84,21 +97,31 @@ class TicketsController extends Controller
             'priority'  => 'required',
             'message'   => 'required'
         ]);
+        
+        $qnty_user = Ticket::join('users', 'users.id', '=', 'tickets.user_id')
+        ->selectRaw('COUNT(tickets.id) as qnty, users.id as userId')
+        ->groupBy('tickets.user_id')
+        ->orderBy('qnty')
+        ->get(['qnty', 'users.id as userId']);
 
-      
+        $qnty_user = $qnty_user->toArray();
+        //print("<pre>".print_r($qnty_user[0]['userId'],true)."</pre>"); 
+ 
         $ticket = new Ticket([
             'title'     => $request->input('title'),
-            'user_id'   => Auth::user()->id,
+            //'user_id'   => Auth::user()->id,
+            'user_id'   => $qnty_user[0]['userId'],
             'ticket_id' => strtoupper(str_random(10)),
             'category_id'  => $request->input('category'),
-            'priority'  => $request->input('priority'),
+            'priority_id'  => $request->input('priority'),
             'message'   => $request->input('message'),
-            'status'    => 1,
+            'status_id'    => 1,
         ]);
 
         $ticket->save();
 
-        return redirect()->back()->with("status", "O Chamado ID: #$ticket->ticket_id foi aberto.");
+        return redirect()->route('home')->with("status", "O Chamado ID: #$ticket->ticket_id foi aberto.");
+
     }
 
     /**
@@ -110,7 +133,7 @@ class TicketsController extends Controller
     public function show($ticket_id)
     {
         $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
-        print("<pre>".print_r($ticket->status,true)."</pre>"); 
+        //print("<pre>".print_r($ticket->status,true)."</pre>"); 
      
         $comments = $ticket->comments;
         $category = $ticket->category;
@@ -130,7 +153,7 @@ class TicketsController extends Controller
     {
         $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
 
-        $ticket->status = 4;
+        $ticket->status_id = 4;
 
         $ticket->save();
 
